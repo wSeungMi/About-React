@@ -1,19 +1,16 @@
-export default function Profile({ user }: any) {
-  console.log(user);
-  return user.name ? (
-    <>
-      <h1>{user.name}</h1>
-      <img
-        className="avatar"
-        src={user.imageUrl}
-        alt={"Photo of " + user.name}
-        style={{
-          width: user.imageSize,
-          height: user.imageSize,
-        }}
-      />
-    </>
-  ) : (
-    ""
-  );
+import { useEffect, useId, useState } from "react";
+
+export default function Profile() {
+  const [count, setCount] = useState(0);
+  const id = useId();
+
+  function handleClick() {
+    setCount(count + 1);
+  }
+
+  useEffect(() => {
+    console.log(id);
+  }, [count]);
+
+  return <button onClick={handleClick}>Click {count}!</button>;
 }
