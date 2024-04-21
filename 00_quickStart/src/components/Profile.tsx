@@ -1,16 +1,13 @@
-import { useEffect, useId, useState } from "react";
-
-export default function Profile() {
-  const [count, setCount] = useState(0);
-  const id = useId();
-
+export default function Profile({
+  count,
+  setCount,
+}: {
+  count: number;
+  setCount: (value: number) => void;
+}) {
   function handleClick() {
     setCount(count + 1);
   }
-
-  useEffect(() => {
-    console.log(id);
-  }, [count]);
 
   return <button onClick={handleClick}>Click {count}!</button>;
 }
