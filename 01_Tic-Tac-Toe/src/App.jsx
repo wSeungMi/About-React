@@ -2,17 +2,57 @@ import Square from "./Square";
 import "./App.css";
 import { useState } from "react";
 
+const winningLines = [
+  // 가로
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+
+  // 세로
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+
+  // 대각선
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
+const calculationWinner = (squares) => {
+  for (let i = 0; i < winningLines.length; i++) {
+    const [a, b, c] = winningLines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+};
+
 export default function Board() {
+  const [xIsNext, setXIsNext] = useState(true);
   const [square, setSquare] = useState(Array(9).fill(null));
 
   function handleClick(idx) {
+    if (square[idx] || calculationWinner(square)) return;
+
     const nextSquares = [...square];
-    nextSquares[idx] = "X";
+    xIsNext ? (nextSquares[idx] = "X") : (nextSquares[idx] = "O");
     setSquare(nextSquares);
+    setXIsNext(!xIsNext);
   }
-  console.log(square);
+
+  const winner = calculationWinner(square);
+  let status;
+
+  if (winner) {
+    status = "Winner: " + winner;
+  } else {
+    status = "Next player: " + (xIsNext ? "X" : "O");
+  }
+
   return (
     <>
+      <div className="status">{status}</div>
       <div className="board-row">
         <Square value={square[0]} onSquareClick={() => handleClick(0)} />
         <Square value={square[1]} onSquareClick={() => handleClick(1)} />
